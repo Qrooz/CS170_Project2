@@ -1,22 +1,9 @@
 import numpy as np
 from numpy import random
 
-#STUB FUNCTION USED FOR TESTING ONLY, MUST IMPLEMENT LATER FIXME
-#def leave_one_out_cross_validation (data,current_set,feature_to_add):
-#   return random.randint(100)
-#    pass
-
+#K fold cross validaiton code
 def leave_one_out_cross_validation (data,current_set,feature_to_add):
     #code to replace irrelevant rows of the data variable with zeroes
-    
-    # combined_set = []
-    # number_correctly_classified = 0
-    
-    # for b in range(len(current_set)):
-    #     combined_set.append(current_set[b])
-
-    # combined_set.append(feature_to_add)
-    
     for x in range(1,len(data[0])):
         if (x not in current_set) and (x != feature_to_add):
             for y in range(len(data)):
@@ -57,21 +44,26 @@ def leave_one_out_cross_validation (data,current_set,feature_to_add):
         
 
 #SEARCH FUNCTION OF THE ALGORITHM
-def feature_search(data):
+def feature_search(data,num):
 
     current_set_of_features = []; #intialized an empty set
     best_of_all = 0
     set_of_best = []
 
-    for i in range(1,len(data[0])): #had - 1 to data
+    for i in range(1,len(data[0])): 
         print("On the ", i,"th level of the search tree")
-        feature_to_add_at_this_level = 0 #was list aparently
+        feature_to_add_at_this_level = 0 
         best_so_far_accuracy = 0
 
-        for k in range(1,len(data[0])): #had - 1 to data
+        for k in range(1,len(data[0])): 
             if k not in current_set_of_features:
                 print("--Considering adding the ", k," feature")
-                data = np.loadtxt('CS170_Small_Data__96.txt')
+                if num == 1:
+                    data = np.loadtxt('CS170_Small_Data__113.txt')
+
+                elif num == 2:
+                    data = np.loadtxt('CS170_Large_Data__122.txt')
+                
                 accuracy = leave_one_out_cross_validation(data,current_set_of_features,k) #k+1
                 print("Returned with an Accuracy of ", accuracy)
 
@@ -79,9 +71,9 @@ def feature_search(data):
                     best_so_far_accuracy = accuracy
                     feature_to_add_at_this_level = k
 
-                if best_so_far_accuracy > best_of_all:
-                    best_of_all = best_so_far_accuracy
-                    set_of_best.append(feature_to_add_at_this_level)
+        if best_so_far_accuracy > best_of_all:
+            best_of_all = best_so_far_accuracy
+            set_of_best.append(feature_to_add_at_this_level)
 
 
         current_set_of_features.append(feature_to_add_at_this_level)
@@ -92,8 +84,17 @@ def feature_search(data):
 
 def main():
 
-    data = np.loadtxt('CS170_Small_Data__96.txt')
-    feature_search(data)
+    print("Welcome to Cruz Ramirez's Forward Feature Selection Algorithm.\nType in a '1' for searching the small dataset 113 or a '2' for searching the large dataset 122:")
+
+    userdata = int(input())
+
+    if userdata == 1:
+        data = np.loadtxt('CS170_Small_Data__113.txt')
+
+    elif userdata == 2:
+        data = np.loadtxt('CS170_Large_Data__122.txt')
+
+    feature_search(data,userdata)
     
 
 if __name__ == "__main__":

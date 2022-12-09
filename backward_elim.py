@@ -66,7 +66,11 @@ def feature_remove(data):
         for k in range(1,len(data[0])): 
             if k in current_set_of_features:
                 print("--Considering removing the ", k," feature")
-                data = np.loadtxt('CS170_Small_Data__96.txt')
+                if userdata == 1:
+                    data = np.loadtxt('CS170_Small_Data__113.txt')
+
+                elif userdata == 2:
+                    data = np.loadtxt('CS170_Large_Data__122.txt')
                 accuracy = leave_one_out_cross_validation(data,current_set_of_features,k) #k+1
                 print("Returned with an Accuracy of ", accuracy)
 
@@ -87,8 +91,17 @@ def feature_remove(data):
 
 def main():
 
-    data = np.loadtxt('CS170_Small_Data__96.txt')
-    feature_remove(data)
+    print("Welcome to Cruz Ramirez's Backward Elimination Feature Selection Algorithm.\nType in a '1' for searching the small dataset 113 or a '2' for searching the large dataset 122:")
+
+    userdata = int(input())
+
+    if userdata == 1:
+        data = np.loadtxt('CS170_Small_Data__113.txt')
+
+    elif userdata == 2:
+        data = np.loadtxt('CS170_Large_Data__122.txt')
+
+    feature_remove(data,userdata)
     
 
 if __name__ == "__main__":
